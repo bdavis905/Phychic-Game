@@ -1,23 +1,50 @@
-//create an array with words to use in game
-var word = ["chevy", "toyota", "honda", "mercedes"];
+//global variables
+var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+var wins = 0;
+var losses = 0;
+var guessesLeft, randomLetter;
 
-//computer choose word randomly
-var randomNumber = Math.floor(Math.random() * word.length);
-var randomWord = word[randomNumber];
-var underScore = [];
+//main functions
+resetGame();
+display();
 
-//display underscores to show length of word to guess
-function getUnderscores () {
-	return underScore;
-for(var i = 0; i < randomWord.length; i++){
-	underScore.push('_');
-	getUnderscores(randomWord.length);
-	}
+//generate random letter to compare to user guess
+document.onkeyup = function(event) {
+  var guess = event.key;
+  if (guess === randomLetter) {
+    win();
+  } else if (guessesLeft - 1 === 0) {
+    lost();
+  } else {
+    fail(guess);
+  }
 
+  display();
 }
 
-console.log(getUnderscores());
-//get user guess
-//check if guess is correct
-//if correct push to array storing correct 
-//if wrong push to array storing wrong
+//display and update webpage with results
+function display() {
+  document.getElementById("wins").innerHTML= "Wins: " + wins;
+  document.getElementById("losses").innerHTML= "Losses: " + losses;
+  document.getElementById("guessesLeft").innerHTML= "Guesses Left: " + guessesLeft;
+  }
+
+//functions to track wins and losses and attempts remaining
+function win() {
+  wins++;
+  resetGame();
+  }
+
+function lost() {
+  losses++;
+  resetGame();
+  }
+
+function fail(letter) {
+  guessesLeft--;
+  }
+
+function resetGame() {
+  guessesLeft = 10;
+  randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+  } 
